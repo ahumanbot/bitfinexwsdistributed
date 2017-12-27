@@ -388,7 +388,7 @@ if __name__ == "__main__":
     logger = Logger()
     logger.doLogging = True
 
-    websocket.enableTrace(False)
+    #websocket.enableTrace(False)
    
     mongo = pymongo.MongoClient("localhost", 27017, maxPoolSize=1000)
     db = mongo.gekko1
