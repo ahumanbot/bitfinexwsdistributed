@@ -388,11 +388,12 @@ if __name__ == "__main__":
     logger = Logger()
     logger.doLogging = True
 
-    #websocket.enableTrace(False)
+    websocket.enableTrace(True)
    
-    mongo = pymongo.MongoClient("localhost", 27017, maxPoolSize=1000)
+    mongo = pymongo.MongoClient("192.168.1.134", 27017, maxPoolSize=1000)
     db = mongo.gekko1
     collection = db[u'bitfinex_real']
+    print("Connected to mongo.")
     #collection.drop()  
     collection.create_index(
         [('start', pymongo.ASCENDING)],
@@ -402,13 +403,13 @@ if __name__ == "__main__":
 
     wsf = Fabric()
     try:
-        wsf.startSyncServer()
+        #wsf.startSyncServer()
 
-        time.sleep(1)
+        #time.sleep(1)
         wsf.startSyncClient()
 
         wsf.startBitfinexWs()
 
-        wsf.forever()
+        wsf.forever()        
     except KeyboardInterrupt:
         exit()
