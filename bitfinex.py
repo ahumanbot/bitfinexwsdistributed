@@ -288,8 +288,11 @@ class Bitfinex:
 
 from websocket_server import WebsocketServer
 class SyncServer():
-    def start(self, port):
-        server = WebsocketServer(port)
+    def __init__(self, port):
+        self.port = port
+
+    def start(self):
+        server = WebsocketServer(self.port, host='0.0.0.0')
         server.set_fn_new_client(self.new_client)
         server.set_fn_client_left(self.client_left)
         server.set_fn_message_received(self.message_received)
@@ -314,7 +317,7 @@ class SyncServer():
 
 class SyncClient():
     def __init__(self, port):
-        self.ws = websocket.WebSocketApp("ws://localhost:%d" % port,
+        self.ws = websocket.WebSocketApp("ws://192.168.1.5:%d" % port,
                     on_message = self.on_message,
                     on_error = self.on_error,
                     on_close = self.on_close)
@@ -386,9 +389,9 @@ class Fabric:
 
 if __name__ == "__main__":
     logger = Logger()
-    logger.doLogging = True
+    logger.doLogging = False
 
-    websocket.enableTrace(True)
+    #websocket.enableTrace(True)
    
     mongo = pymongo.MongoClient("192.168.1.134", 27017, maxPoolSize=1000)
     db = mongo.gekko1
@@ -403,12 +406,10 @@ if __name__ == "__main__":
 
     wsf = Fabric()
     try:
-        #wsf.startSyncServer()
-
-        #time.sleep(1)
-        wsf.startSyncClient()
-
+        wsf.startSyncServer()
         wsf.startBitfinexWs()
+
+        #wsf.startSyncClient()
 
         wsf.forever()        
     except KeyboardInterrupt:
