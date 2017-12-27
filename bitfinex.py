@@ -317,7 +317,7 @@ class SyncServer():
 
 class SyncClient():
     def __init__(self, port):
-        self.ws = websocket.WebSocketApp("ws://192.168.1.5:%d" % port,
+        self.ws = websocket.WebSocketApp("ws://localhost:%d" % port,
                     on_message = self.on_message,
                     on_error = self.on_error,
                     on_close = self.on_close)
@@ -389,7 +389,7 @@ class Fabric:
 
 if __name__ == "__main__":
     logger = Logger()
-    logger.doLogging = False
+    logger.doLogging = True
 
     #websocket.enableTrace(True)
    
@@ -406,10 +406,10 @@ if __name__ == "__main__":
 
     wsf = Fabric()
     try:
-        wsf.startSyncServer()
+        #wsf.startSyncServer()
         wsf.startBitfinexWs()
 
-        #wsf.startSyncClient()
+        wsf.startSyncClient()
 
         wsf.forever()        
     except KeyboardInterrupt:
